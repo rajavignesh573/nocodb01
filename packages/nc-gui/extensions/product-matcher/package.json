@@ -1,0 +1,25 @@
+{
+  "name": "nc-product-matcher-extension",
+  "version": "1.0.0",
+  "description": "A product matching and comparison extension for NocoDB",
+  "main": "index.vue",
+  "scripts": {
+    "build": "echo 'No build required for Vue component'",
+    "test": "echo 'No tests specified'"
+  },
+  "keywords": [
+    "nocodb",
+    "product-matcher",
+    "extension",
+    "vue",
+    "comparison"
+  ],
+  "author": "NocoDB",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "peerDependencies": {
+    "vue": "^3.0.0",
+    "ant-design-vue": "^4.0.0"
+  }
+}

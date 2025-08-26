@@ -1,0 +1,266 @@
+{
+  "info": {
+    "name": "nc-product-matching API",
+    "description": "Product matching API endpoints for testing",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001",
+      "type": "string"
+    },
+    {
+      "key": "tenantId",
+      "value": "test-tenant",
+      "type": "string"
+    },
+    {
+      "key": "baseId",
+      "value": "test-base",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "test-user",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        }
+      }
+    },
+    {
+      "name": "Get Info",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-tenant-id",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/info",
+          "host": ["{{baseUrl}}"],
+          "path": ["info"]
+        }
+      }
+    },
+    {
+      "name": "Get Products",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-tenant-id",
+            "value": "{{tenantId}}",
+            "type": "text"
+          },
+          {
+            "key": "x-base-id",
+            "value": "{{baseId}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/products?q=test&limit=10&offset=0",
+          "host": ["{{baseUrl}}"],
+          "path": ["products"],
+          "query": [
+            {
+              "key": "q",
+              "value": "test",
+              "description": "Search query"
+            },
+            {
+              "key": "limit",
+              "value": "10",
+              "description": "Number of results"
+            },
+            {
+              "key": "offset",
+              "value": "0",
+              "description": "Pagination offset"
+            },
+            {
+              "key": "sortBy",
+              "value": "title",
+              "description": "Sort field (title|brand|updated_at)"
+            },
+            {
+              "key": "sortDir",
+              "value": "asc",
+              "description": "Sort direction (asc|desc)"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Product Candidates",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-tenant-id",
+            "value": "{{tenantId}}",
+            "type": "text"
+          },
+          {
+            "key": "x-base-id",
+            "value": "{{baseId}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/products/PRODUCT-001/candidates?sources=AMZ,TGT&limit=5&priceBandPct=15",
+          "host": ["{{baseUrl}}"],
+          "path": ["products", "PRODUCT-001", "candidates"],
+          "query": [
+            {
+              "key": "sources",
+              "value": "AMZ,TGT",
+              "description": "Comma-separated source codes"
+            },
+            {
+              "key": "limit",
+              "value": "5",
+              "description": "Number of candidates"
+            },
+            {
+              "key": "priceBandPct",
+              "value": "15",
+              "description": "Price band percentage"
+            },
+            {
+              "key": "ruleId",
+              "value": "rule-default-001",
+              "description": "Matching rule ID"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Confirm Match",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-tenant-id",
+            "value": "{{tenantId}}",
+            "type": "text"
+          },
+          {
+            "key": "x-base-id",
+            "value": "{{baseId}}",
+            "type": "text"
+          },
+          {
+            "key": "x-user-id",
+            "value": "{{userId}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"local_product_id\": \"PRODUCT-001\",\n  \"external_product_key\": \"AMZ:B08N5WRWNW\",\n  \"source_code\": \"AMZ\",\n  \"score\": 0.95,\n  \"price_delta_pct\": -5.2,\n  \"rule_id\": \"rule-default-001\",\n  \"status\": \"confirmed\",\n  \"notes\": \"Exact match with GTIN\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/matches",
+          "host": ["{{baseUrl}}"],
+          "path": ["matches"]
+        }
+      }
+    },
+    {
+      "name": "Get Matches",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-tenant-id",
+            "value": "{{tenantId}}",
+            "type": "text"
+          },
+          {
+            "key": "x-base-id",
+            "value": "{{baseId}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/matches?status=confirmed&limit=10&offset=0",
+          "host": ["{{baseUrl}}"],
+          "path": ["matches"],
+          "query": [
+            {
+              "key": "status",
+              "value": "confirmed",
+              "description": "Match status (confirmed|rejected|superseded)"
+            },
+            {
+              "key": "limit",
+              "value": "10",
+              "description": "Number of results"
+            },
+            {
+              "key": "offset",
+              "value": "0",
+              "description": "Pagination offset"
+            },
+            {
+              "key": "localProductId",
+              "value": "PRODUCT-001",
+              "description": "Filter by local product ID"
+            },
+            {
+              "key": "source",
+              "value": "AMZ",
+              "description": "Filter by source"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Delete Match",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "x-tenant-id",
+            "value": "{{tenantId}}",
+            "type": "text"
+          },
+          {
+            "key": "x-base-id",
+            "value": "{{baseId}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/matches/MATCH-001",
+          "host": ["{{baseUrl}}"],
+          "path": ["matches", "MATCH-001"]
+        }
+      }
+    }
+  ]
+}
